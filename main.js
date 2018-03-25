@@ -18,6 +18,13 @@ class Block {
     }
 }
 
+class Observation {
+    constructor(rt,cm) {
+        this.resourceType = rt;
+        this.comments = cm;
+    }
+}
+
 var sockets = [];
 var MessageType = {
     QUERY_LATEST: 0,
@@ -26,7 +33,7 @@ var MessageType = {
 };
 
 var getGenesisBlock = () => {
-    return new Block(0, "0", 1465154705, "TESTTEST", "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7");
+    return new Block(0, "0", 1465154705, new Observation("Observation","INICIAL"), "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7");
 };
 
 var blockchain = [getGenesisBlock()];
@@ -36,8 +43,10 @@ var initHttpServer = () => {
     app.use(bodyParser.json());
 
     app.get('/blocks', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(blockchain))});
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(blockchain))
+    });
+
     app.post('/mineBlock', (req, res) => {
         var newBlock = generateNextBlock(req.body.data);
         addBlock(newBlock);
