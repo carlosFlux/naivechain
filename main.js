@@ -44,7 +44,9 @@ var initHttpServer = () => {
 
     app.get('/blocks', (req, res) => {
         res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify(blockchain))
+        var blockchainToReturn = blockchain.slice();
+        blockchainToReturn.shift();
+        res.send(JSON.stringify(blockchainToReturn))
     });
 
     app.post('/mineBlock', (req, res) => {
